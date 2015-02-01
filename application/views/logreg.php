@@ -15,7 +15,7 @@
 <body>
 <div class="container">
 
-      <form class="form-signin" action="login/sign_in" method="post">
+      <form class="form-signin" action="login/welcome" method="post">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" name="loginemail" class="form-control" placeholder="Email address" required autofocus>
@@ -40,7 +40,7 @@
         <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
 
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" name="password "class="form-control" placeholder="Password" required>
+        <input type="password" id="inputPassword" name="password_"class="form-control" placeholder="Password" required>
         <div class="checkbox">
         <label for="inputPassword" class="sr-only">Confirm Password</label>
         <input type="password" id="inputPassword" name="pw_confirm"class="form-control" placeholder=" Confirm Password" required>

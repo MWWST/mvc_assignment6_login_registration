@@ -41,9 +41,9 @@ class Login extends CI_Controller {
 				(die);
 			}
 		}
-	public function sign_in(){ 
-		var_dump($this->input->post());
-		$this->output->enable_profiler(TRUE);
+	public function welcome(){ 
+		// var_dump($this->input->post());
+		// $this->output->enable_profiler(TRUE);
 		$loginemail = $this->input->post('loginemail');
 		$password = md5($this->input->post('loginpassword'));
 		$this->load->model('User');
@@ -53,19 +53,22 @@ class Login extends CI_Controller {
 				'user_id' => $user['id'],
 				'user_email'=> $user['email'],
 				'user_name'=> $user['first_name']." ".$user['last_name'],
+				'user_first_name'=> $user['first_name'],
+				'user_last_name' =>$user['last_name'],
 				'is_logged_in' => true
 				);
 			$this->session->set_userdata($current_user);
-			var_dump($this->session->all_userdata());
+			$this->load->view('welcome');
+			// var_dump($this->session->all_userdata());
 		}
 		else {
-			echo "wrong email";
+			$this->session->sess_destroy();
+			redirect('http://host-2:8888/ d');
 		}
-			
-
-
 
 	}
+
+
 }
 
 ?>
