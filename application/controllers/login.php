@@ -36,14 +36,37 @@ class Login extends CI_Controller {
 			$user= array('first_name'=>$this->input->post('first_name'),'last_name'=>$this->input->post('last_name'),'email'=>$this->input->post('email'),'password'=>md5($pw));
 			$add_user=$this->User->adduser($user);
 				if($add_user === TRUE){
-				echo "you got it in";
+					// var_dump($this->input->post());
+
+			$loginemail = $this->input->post('email');
+			// echo $loginemail;
+			$password = md5($this->input->post('password_'));
+			$this->load->model('User');
+			$user= $this->User->login($loginemail);
+				if ($user && $user['password']== $password) {
+					$current_user = array(
+						'user_id' => $user['id'],
+						'user_email'=> $user['email'],
+						'user_name'=> $user['first_name']." ".$user['last_name'],
+						'user_first_name'=> $user['first_name'],
+						'user_last_name' =>$user['last_name'],
+						'is_logged_in' => true
+						);
+					$this->session->set_userdata($current_user);
+					// redirect('login');
+						var_dump($this->session->all_userdata());
+					}
 				}
-				(die);
 			}
 		}
 	public function welcome(){ 
 		// var_dump($this->input->post());
 		// $this->output->enable_profiler(TRUE);
+		if ($this->session->userdata('is_logged_in')==true){
+			$this->load->view('welcome');
+		}
+		else {
+
 		$loginemail = $this->input->post('loginemail');
 		$password = md5($this->input->post('loginpassword'));
 		$this->load->model('User');
@@ -61,14 +84,15 @@ class Login extends CI_Controller {
 			$this->load->view('welcome');
 			// var_dump($this->session->all_userdata());
 		}
-		else {
-			$this->session->sess_destroy();
-			redirect('http://host-2:8888/ d');
-		}
-
+		
 	}
 
-
 }
+
+	public function logout(){
+			$this->session->sess_destroy();
+			redirect('http://host-2:8888/');
+		}
+	}
 
 ?>

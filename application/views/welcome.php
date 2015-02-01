@@ -15,7 +15,7 @@
 <style type="text/css">
 
 .thumbnail {
-	width:300px;
+	width:400px;
 }
 </style>
 </head>
@@ -41,7 +41,7 @@
         <li><a href="#">Link</a></li>
         </li> -->
       </ul>
-     <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><?=$this->session->userdata('user_name')." ";?></a><a href="/login/welcome"><button type="button" class="btn btn-default navbar-btn">Log Out</button></a></p>
+     <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><?=$this->session->userdata('user_name')." ";?></a><a href="/login/logout"><button type="button" class="btn btn-default navbar-btn">Log Out</button></a></p>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
