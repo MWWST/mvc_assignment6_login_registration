@@ -1,12 +1,9 @@
 <?php
 
 class Login extends CI_Controller {
-
 	public function register(){
-		
 		$pw=($this->input->post('password_'));
-		// echo md5($pw);
-
+															// create an array of configuration for validation check out ellislab.com/codeigniter/user-guide/libraries/form_validation.html#rulereference for more options, you can pipe, etc.
 		$config = array(
 					array(
 							'field' =>'email',
@@ -24,27 +21,23 @@ class Login extends CI_Controller {
 							'rules' =>'matches[password_]'
 						)
 			);
-		$this->load->library('form_validation');
-		$this->form_validation->set_rules($config);
-
-			if($this->form_validation->run() === FALSE){
+		$this->load->library('form_validation'); 			// load form validation library
+		$this->form_validation->set_rules($config); 		// pass the associative array of 														config items above into the set_rules 													  function
+			if($this->form_validation->run() === FALSE){    // if we have errors 
 				echo validation_errors();
 			}
-
-			else {
+			else {  										 // if no errors let's run the add 													user function in the User model
 			$this->load->model('User');
 			$user= array('first_name'=>$this->input->post('first_name'),'last_name'=>$this->input->post('last_name'),'email'=>$this->input->post('email'),'password'=>md5($pw));
 			$add_user=$this->User->adduser($user);
 				if($add_user === TRUE){
-					// var_dump($this->input->post());
-
 			$loginemail = $this->input->post('email');
 			// echo $loginemail;
-			$password = md5($this->input->post('password_'));
+			$password = md5($this->input->post('password_')); // setting password to md5
 			$this->load->model('User');
 			$user= $this->User->login($loginemail);
 				if ($user && $user['password']== $password) {
-					$current_user = array(
+					$current_user = array(  				// setting array to pass into session
 						'user_id' => $user['id'],
 						'user_email'=> $user['email'],
 						'user_name'=> $user['first_name']." ".$user['last_name'],
@@ -53,26 +46,23 @@ class Login extends CI_Controller {
 						'is_logged_in' => true
 						);
 					$this->session->set_userdata($current_user);
-					// redirect('login');
-						var_dump($this->session->all_userdata());
+					redirect('/login/welcome'); 					// redirect to welcome method 												which checks for user logged in.
 					}
 				}
 			}
 		}
 	public function welcome(){ 
-		// var_dump($this->input->post());
-		// $this->output->enable_profiler(TRUE);
-		if ($this->session->userdata('is_logged_in')==true){
-			$this->load->view('welcome');
+																
+		if ($this->session->userdata('is_logged_in')==true){ 	// if the user is logged in 															already (which means they just 															registered)
+			$this->load->view('welcome'); 						//load welcome view
 		}
 		else {
-
-		$loginemail = $this->input->post('loginemail');
-		$password = md5($this->input->post('loginpassword'));
-		$this->load->model('User');
-		$user= $this->User->login($loginemail);
-		if ($user && $user['password']== $password) {
-			$current_user = array(
+		$loginemail = $this->input->post('loginemail'); 		// otherwise go through user 														 		login process
+		$password = md5($this->input->post('loginpassword')); 	//md5 the password
+		$this->load->model('User'); 							//load user model
+		$user= $this->User->login($loginemail);					//remind myself why I am doing this
+		if ($user && $user['password']== $password) {			//if user passwor matches
+			$current_user = array(								//create an array that we'll stoe 														in session
 				'user_id' => $user['id'],
 				'user_email'=> $user['email'],
 				'user_name'=> $user['first_name']." ".$user['last_name'],
@@ -80,19 +70,14 @@ class Login extends CI_Controller {
 				'user_last_name' =>$user['last_name'],
 				'is_logged_in' => true
 				);
-			$this->session->set_userdata($current_user);
+			$this->session->set_userdata($current_user);		// store the array in session
 			$this->load->view('welcome');
-			// var_dump($this->session->all_userdata());
-		}
-		
+		}	
 	}
-
 }
-
-	public function logout(){
+	public function logout(){									//when user clicks 'logout', 																destroy session and go to homepage.
 			$this->session->sess_destroy();
 			redirect('http://host-2:8888/');
 		}
 	}
-
 ?>
